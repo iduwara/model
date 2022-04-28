@@ -1,15 +1,21 @@
-import base64
-import io
+import os
 
-from PIL.Image import Image
 from flask import Flask
-import numpy as np
+# import numpy as np
 from keras.models import load_model
 from keras.preprocessing.image import img_to_array
 from flask import request
 from keras_preprocessing.image import load_img
+# from flask_cors import CORS, cross_origin
+import PIL
+import tensorflow as tf
+# from tensorflow.keras.preprocessing.image import load_img, img_to_array
+# from tensorflow.keras.models import load_model
+import numpy as np
 
 app = Flask(__name__)
+# cors = CORS(app)
+# app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 def get_model():
@@ -33,6 +39,7 @@ get_model()
 
 
 @app.route('/predict', methods=['POST'])
+# @cross_origin()
 def predict():
     imagefile = request.files['imageFile']
     imagepath = "./images/" + imagefile.filename
@@ -46,6 +53,7 @@ def predict():
         'predictionPercentage': percentage
     }
 
+    os.remove(imagepath)
 
     return response
 
